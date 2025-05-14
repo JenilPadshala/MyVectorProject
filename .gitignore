@@ -1,0 +1,39 @@
+# Compiled Object files
+*.o
+*.obj
+
+# Precompiled Headers
+*.pch
+
+# Compiled Executables
+*.exe
+*.out
+a.out # Default GCC output
+
+# Libraries
+*.lib
+*.dll
+*.dylib
+*.so
+
+# Debug files
+*.suo
+*.pdb
+*.idb
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build directories
+build/
+cmake-build-debug/
+cmake-build-release/
+
+# Mac OS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
