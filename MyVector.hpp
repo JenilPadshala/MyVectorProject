@@ -50,6 +50,18 @@ public:
                   << ", Capacity: " << m_capacity << std::endl;
         delete[] m_data;
     }
+
+    // Copy Constructor
+    MyVector(const MyVector& other) : m_data(nullptr), m_size(other.m_size), m_capacity(other.m_capacity) {
+        if (m_capacity == 0){
+            return;
+        }
+        m_data = new T[m_capacity];
+
+        for (size_t i=0; i<m_size; ++i) {
+            m_data[i] = other.m_data[i];
+        }
+    }
     
     // Basic Accessor Methods
     size_t size() const {

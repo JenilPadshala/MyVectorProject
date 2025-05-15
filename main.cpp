@@ -1,9 +1,8 @@
 #include <iostream>
-#include <string>    
-#include <stdexcept> 
+#include <string>
+#include <stdexcept>
 #include "MyVector.hpp"
 
-// Helper function to print vector stats and content
 template <typename T>
 void print_vector_details(const MyVector<T>& vec, const std::string& name) {
     std::cout << "---- " << name << " ----" << std::endl;
@@ -11,52 +10,51 @@ void print_vector_details(const MyVector<T>& vec, const std::string& name) {
               << ", " << name << ".capacity(): " << vec.capacity()
               << ", " << name << ".empty(): " << (vec.empty() ? "true" : "false")
               << std::endl;
-    std::cout << name << " elements: [ ";
-    for (size_t i = 0; i < vec.size(); ++i) {
-        std::cout << vec[i] << (i == vec.size() - 1 ? "" : ", "); // Uses const operator[]
+    if (!vec.empty()) { // Only print elements if not empty
+        std::cout << name << " elements: [ ";
+        for (size_t i = 0; i < vec.size(); ++i) {
+            std::cout << vec[i] << (i == vec.size() - 1 ? "" : ", ");
+        }
+        std::cout << " ]" << std::endl;
+    } else {
+        std::cout << name << " is empty." << std::endl;
     }
-    std::cout << " ]" << std::endl;
     std::cout << "--------------------" << std::endl;
 }
 
 int main() {
-    std::cout << "MyVector Project: Testing Step 4 (operator[]) started." << std::endl;
-    std::cout << "=======================================================" << std::endl;
+    std::cout << "MyVector Project: Testing Step 5A (Copy Constructor) started." << std::endl;
+    std::cout << "=============================================================" << std::endl;
 
-    MyVector<int> v_int;
-    v_int.push_back(10);
-    v_int.push_back(20);
-    v_int.push_back(30);
-    print_vector_details(v_int, "v_int");
+    MyVector<int> original_v;
+    original_v.push_back(10);
+    original_v.push_back(20);
+    original_v.push_back(30);
+    print_vector_details(original_v, "original_v");
 
-    std::cout << "\nModifying v_int[1]..." << std::endl;
-    v_int[1] = 200; // Uses non-const operator[]
-    print_vector_details(v_int, "v_int (after modification)");
+    std::cout << "\nCreating copied_v from original_v using Copy Constructor..." << std::endl;
+    MyVector<int> copied_v = original_v; // Calls Copy Constructor
+    print_vector_details(copied_v, "copied_v (after copy construction)");
+    print_vector_details(original_v, "original_v (should be unchanged)");
 
-    std::cout << "\nAccessing elements of a const MyVector..." << std::endl;
-    const MyVector<int>& const_v_int_ref = v_int;
-    std::cout << "const_v_int_ref[0]: " << const_v_int_ref[0] << std::endl; // Uses const operator[]
-    // const_v_int_ref[0] = 1000; // This line should cause a compile error if uncommented
-
-    print_vector_details(const_v_int_ref, "const_v_int_ref");
-
-
-    std::cout << "\nTesting out-of-bounds access..." << std::endl;
-    try {
-        std::cout << "Attempting to access v_int[5] (size is " << v_int.size() << ")..." << std::endl;
-        std::cout << v_int[5] << std::endl; // This should throw
-    } catch (const std::out_of_range& e) {
-        std::cout << "Caught exception: " << e.what() << std::endl;
+    std::cout << "\nModifying original_v to test deep copy..." << std::endl;
+    original_v.push_back(40);
+    if (original_v.size() > 0) { // Check if there are elements to modify
+        original_v[0] = 100;
     }
+    print_vector_details(original_v, "original_v (after modification)");
+    print_vector_details(copied_v, "copied_v (should be unaffected by original_v changes)");
 
-    try {
-        std::cout << "Attempting to access const_v_int_ref[3] (size is " << const_v_int_ref.size() << ")..." << std::endl;
-        std::cout << const_v_int_ref[3] << std::endl; // This should throw
-    } catch (const std::out_of_range& e) {
-        std::cout << "Caught exception: " << e.what() << std::endl;
-    }
-    
-    std::cout << "\n=======================================================" << std::endl;
-    std::cout << "MyVector Project: Testing Step 4 finished." << std::endl;
+    std::cout << "\nTesting copy of an empty vector..." << std::endl;
+    MyVector<int> empty_original;
+    print_vector_details(empty_original, "empty_original");
+    MyVector<int> copied_empty = empty_original; // Calls Copy Constructor
+    print_vector_details(copied_empty, "copied_empty");
+    copied_empty.push_back(5); // Modify copy to ensure it's independent
+    print_vector_details(copied_empty, "copied_empty (after push_back)");
+    print_vector_details(empty_original, "empty_original (should still be empty)");
+
+    std::cout << "\n=============================================================" << std::endl;
+    std::cout << "MyVector Project: Testing Step 5A finished." << std::endl;
     return 0;
 }
