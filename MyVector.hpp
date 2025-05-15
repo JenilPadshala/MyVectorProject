@@ -5,6 +5,8 @@
 #include <iostream> //for testing purpose only
 #include <algorithm>
 #include <stdexcept>
+#include <utility>
+
 
 
 template <typename T>
@@ -90,6 +92,14 @@ public:
         return *this;
     }
     
+
+    // Move Constructor
+    MyVector(MyVector&& other) noexcept : m_data(other.m_data), m_size(other.m_size), m_capacity(other.m_capacity) {
+        other.m_data = nullptr;
+        other.m_size = 0;
+        other.m_capacity = 0;
+    }
+
     // Basic Accessor Methods
     size_t size() const {
         return m_size;
