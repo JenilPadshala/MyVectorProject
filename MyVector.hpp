@@ -62,6 +62,33 @@ public:
             m_data[i] = other.m_data[i];
         }
     }
+
+    // copy assignment operator
+    MyVector& operator=(const MyVector& other) {
+        if (this == &other) {
+            return *this;
+        }
+
+        delete[] m_data;
+        m_data = nullptr;
+        m_size = 0;
+        m_capacity = 0;
+
+        m_size = other.m_size;
+        m_capacity = other.m_capacity;
+
+        if (m_capacity == 0){
+            return *this;
+        }
+
+        m_data = new T[m_capacity];
+
+        for (size_t i=0; i<m_size; ++i){
+            m_data[i] = other.m_data[i];
+        }
+
+        return *this;
+    }
     
     // Basic Accessor Methods
     size_t size() const {
