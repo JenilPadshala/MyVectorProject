@@ -3,6 +3,9 @@
 
 #include <cstddef>
 #include <iostream> //for testing purpose only
+#include <algorithm>
+#include <stdexcept>
+
 
 template <typename T>
 class MyVector {
@@ -78,6 +81,24 @@ public:
         m_data[m_size] = value;
         m_size++;
         std::cout << "After push_back. New size: " << m_size << ", new capacity: " << m_capacity << std::endl;
+    }
+
+    // Element Access
+
+    // Non-const version: allows modification of the element
+    T& operator[](size_t index) {
+        if (index >= m_size) {
+            throw std::out_of_range("MyVector::operator[] - Index out of bounds");
+        }
+        return m_data[index];
+    }
+
+    // Const version: for read-only access on const Myvector objects
+    const T& operator[](size_t index) const {
+        if (index >= m_size) {
+            throw std::out_of_range("MyVector::operator[] - Index out of bounds");
+        }
+        return m_data[index];
     }
 };
 
